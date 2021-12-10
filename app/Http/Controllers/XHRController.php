@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\City;
 
-class FetchController extends Controller
+class XHRController extends Controller
 {
   function index() {
-    return view('fetch');
+    return view('xhr');
   }
 
   function cities() {
@@ -31,9 +30,8 @@ class FetchController extends Controller
   }
 
   function cities_with_params() {
-    $city = City::find(request('city'));
-    // return response()->json([$city]);
-    return response()->json(['request' => request()->all()]);
+    // $city = City::find(request('city'));
+    return response()->json(['city' => request('city'), 'name' => request('name')]);
     // if (isset($city)) {
     //   return response()->json(['status' => 1, 'city' => $city]);
     // } else {

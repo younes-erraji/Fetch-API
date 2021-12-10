@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="{{ csrf_token() }}" />
-  <title>Fetch API & XMLHttpRequest</title>
+  <title>Fetch API</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 </head>
 <body>
   <h1 class="bg-dark text-white text-center">
     <div class="container pt-4 pb-4">
-      Fetch API and XMLHttpRequest
+      Fetch API
     </div>
   </h1>
   <div class="container mt-4 mb-4">
@@ -35,7 +35,7 @@
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" />
+        <input type="password" class="form-control" id="password" name="password" />
       </div>
       <div class="form-group form-check">
         <input type="checkbox" class="form-check-input" id="male" name="gender" value="Male" />
@@ -97,7 +97,7 @@
         return response.json();
       })
       .then(response => {
-        getDemo.innerHTML = response.name + '|' + response.city.name;
+        getDemo.innerHTML = response.name + ' | ' + response.city.name;
       })
       .catch(exception => {
         demoWithoutParams.innerHTML = '<div class="col-12 text-center text-center display-4">Exception</div>';
@@ -105,8 +105,14 @@
   </script>
 
   <script>
+
     const demoWithParams = document.querySelector('#demo-with-params');
+
     async function postData(route) {
+
+      const formData = new FormData(document.forms[0]);
+      console.log([...formData]);
+
       const response = await fetch(route, {
         method: 'POST',
         // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -120,7 +126,13 @@
           'Content-Type': 'application/json',
           'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
-        body: JSON.stringify(new FormData(document.forms[0]))
+        body: JSON.stringify(
+            [...formData]
+            // {
+            //     city: 1,
+            //     name: 'Younes'
+            // }
+        )
       });
       return response.json();
     }
@@ -136,33 +148,5 @@
 
 
   </script>
-  {{--
-  <script>
-    // Example POST method implementation:
-    async function postData(url = '', data = {}) {
-      // Default options are marked with *
-      const response = await fetch(url, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-          'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: JSON.stringify(data) // body data type must match "Content-Type" header
-      });
-      return response.json(); // parses JSON response into native JavaScript objects
-    }
-
-    postData('https://example.com/answer', { answer: 42 })
-      .then(data => {
-        console.log(data); // JSON data parsed by `data.json()` call
-      });
-
-  </script>
-  --}}
 </body>
 </html>
