@@ -30,8 +30,8 @@ class XHRController extends Controller
   }
 
   function cities_with_params() {
-    // $city = City::find(request('city'));
     return response()->json(['city' => request('city'), 'name' => request('name')]);
+    // $city = City::find(request('city'));
     // if (isset($city)) {
     //   return response()->json(['status' => 1, 'city' => $city]);
     // } else {

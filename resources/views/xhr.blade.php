@@ -27,7 +27,7 @@
     </div>
     <hr />
     <div class="container mt-4 mb-4">
-      <h2 class="text-center mb-4">Fetch with parameters</h2>
+      <h2 class="text-center mb-4">(POST) with parameters</h2>
       <form method="POST">
         <input type="hidden" name="city" value="1" />
         <div class="form-group">
@@ -107,12 +107,15 @@
     <script>
       const demoWithParams = document.querySelector('#demo-with-params');
 
+      const formData = new FormData(document.forms[0]);
+
     function postData(route) {
 
       const xhrWithParamsPOST = new XMLHttpRequest();
 
       xhrWithParamsPOST.open('POST', route, true);
       xhrWithParamsPOST.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+      xhrWithParamsPOST.setRequestHeader('Content-Type', 'application/json');
       xhrWithParamsPOST.onreadystatechange = function () {
 
         if (xhrWithParamsPOST.readyState === XMLHttpRequest.DONE) {
@@ -125,10 +128,16 @@
           }
         }
       };
-      xhrWithParamsPOST.send({
-        'city': 4,
-        'name': 'Younes ERRAJI'
-      });
+
+      // xhrWithParamsPOST.send(JSON.stringify({
+      //   'city': 4,
+      //   'name': 'Younes ERRAJI'
+      // }));
+
+      xhrWithParamsPOST.send(JSON.stringify(formData));
+
+      // console.log(JSON.stringify(formData));
+      console.log([...formData]);
 
     }
 
